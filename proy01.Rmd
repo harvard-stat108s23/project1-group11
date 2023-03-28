@@ -220,7 +220,7 @@ renderDT({
 
 
 
-STR characteristics analysis {data-icon="ion-stats-bars"}
+Maximum Renter Capacity by Zipcode {data-icon="ion-stats-bars"}
 =====================================     
 
 Inputs {.sidebar data-width=300}
@@ -228,32 +228,39 @@ Inputs {.sidebar data-width=300}
 
 ```{r}
 
-quant_vars <- c("total_bedrooms", "rented_bedrooms", "max_renter_cap", "bathrooms")
-color_vars <- c("zipcode", "str_type", "property_type", "total_bedrooms", "rented_bedrooms", "max_renter_cap", "bathrooms", "kitchen", "condo", "airbnb", "flipkey", "vrbo", "craigslist")
 
-pickerInput("x",
-            label = "Select X axis:",
-            choices = quant_vars,
-            selected = quant_vars[1], 
-          multiple = FALSE)
+pickerInput("property_type",
+            label = "Property Type:",
+            choices = property_type_to,
+            selected = property_type_to,
+            multiple = FALSE)
 
-pickerInput("y",
-            label = "Select Y axis:",
-            choices = quant_vars,
-            selected = quant_vars[2], 
-          multiple = FALSE)
+#quant_vars <- c("total_bedrooms", "rented_bedrooms", "max_renter_cap", "bathrooms")
+#color_vars <- c("zipcode", "str_type", "property_type", "total_bedrooms", "rented_bedrooms", "max_renter_cap", "bathrooms", "kitchen", "condo", "airbnb", "flipkey", "vrbo", "craigslist")
 
-pickerInput("color",
-            label = "Select 'color' variable:",
-            choices = color_vars,
-            selected = color_vars[1], 
-          multiple = FALSE)
+#pickerInput("x",
+          #  label = "Select X axis:",
+       #     choices = quant_vars,
+      #      selected = quant_vars[1], 
+    #      multiple = FALSE)
 
-pickerInput("size",
-            label = "Select 'size' variable:",
-            choices = quant_vars,
-            selected = quant_vars[3], 
-          multiple = FALSE)
+#pickerInput("y",
+          #  label = "Select Y axis:",
+         #   choices = quant_vars,
+        #    selected = quant_vars[2], 
+       #   multiple = FALSE)
+
+#pickerInput("color",
+       #     label = "Select 'color' variable:",
+       #     choices = color_vars,
+       #     selected = color_vars[1], 
+      #    multiple = FALSE)
+
+#pickerInput("size",
+       #     label = "Select 'size' variable:",
+      #      choices = quant_vars,
+      #      selected = quant_vars[3], 
+      #    multiple = FALSE)
 
 actionButton("update2", "Update results")
 ```
@@ -263,33 +270,50 @@ actionButton("update2", "Update results")
 Column
 -------------------------------------
 
-### Boxplot analysis
+### Histogram analysis
 ```{r}
 
-df_scatter = eventReactive(input$update2, {
-    df  %>%
-    mutate(x = .data[[input$x]]) %>%
-    mutate(y = .data[[input$y]]) %>%
-    mutate(color = .data[[input$color]]) %>%
-    mutate(size = .data[[input$size]])
-  })
+#df_scatter = eventReactive(input$update2, {
+ # df %>% 
+  #  filter(zipcode %in% input$zipcode) %>%
+  #  mutate(x = .data[[input$x]]) %>%
+  #  mutate(y = .data[[input$y]]) %>%
+  #  mutate(color = .data[[input$color]]) %>%
+  #  mutate(size = .data[[input$size]])
+#})
   
 
-x <- eventReactive(input$update2, input$x)
-y <- eventReactive(input$update2, input$y)
-color <- eventReactive(input$update2, input$color)
-size <- eventReactive(input$update2, input$size)
+#x <- eventReactive(input$update2, input$x)
+#y <- eventReactive(input$update2, input$y)
+#color <- eventReactive(input$update2, input$color)
+#size <- eventReactive(input$update2, input$size)
 
+
+#renderPlotly({
+#ggplotly(
+ # ggplot(data = df_scatter(), mapping = aes(x = x, y = y, color = color, size = size)) +
+ # geom_histogram(size = 2) + 
+ # labs(x = x(),
+  #     y = y()), 
+ # tooltip = c("x", "y", "color", "size")
+#)
+#  })
+
+
+df_filtered <- eventReactive(input$update2, {
+df %>% filter(property_type %in% input$property_type)
+})
 
 renderPlotly({
-ggplotly(
-  ggplot(data = df_scatter(), mapping = aes(x = x, y = y, color = color, size = size)) +
-  geom_point(size = 2) + 
-  labs(x = x(),
-       y = y()), 
-  tooltip = c("x", "y", "color", "size")
-)
-  })
+p <- ggplot(data = df_filtered()) +
+geom_histogram(aes(x = max_renter_cap, fill = zipcode), binwidth = 1, alpha = 0.5, position = "dodge") +
+labs(title = "Maximum Renter Capacity by Zipcode",
+x = "Maximum Renter Capacity",
+y = "Frequency") +
+scale_fill_discrete(name = "Zipcode")
+
+ggplotly(p)
+})
 ```
 
 
