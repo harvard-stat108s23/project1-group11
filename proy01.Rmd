@@ -65,21 +65,24 @@ max_renter_cap_list <- sort(unique(df$max_renter_cap))
 bathrooms_list <- sort(unique(df$bathrooms))
 
 pickerInput("zipcode",
-            label = "Zipcodes of interest",
+            label = "Select zipcodes",
             choices = zipcode_list,
             selected = zipcode_list, 
+            options = list(`actions-box` = TRUE),
           multiple = TRUE)
 
 pickerInput("str_type",
-            label = "STR types of interest",
+            label = "Select Short-Term Rental types",
             choices = str_type_list,
-            selected = str_type_list, 
+            selected = str_type_list[1], 
+            options = list(`actions-box` = TRUE),
           multiple = TRUE)
 
 pickerInput("property_type",
-            label = "Property types of interest",
+            label = "Select property types",
             choices = property_type_to,
-            selected = property_type_to, 
+            selected = property_type_to[1], 
+            options = list(`actions-box` = TRUE),
           multiple = TRUE)
 
 #sliderInput("total_bedrooms", "Total Bedrooms",
@@ -88,19 +91,19 @@ pickerInput("property_type",
 #                  value = c(min(total_bedrooms_list),max(total_bedrooms_list)),
 #                  sep = "")
 
-sliderInput("rented_bedrooms", "Rented bedrooms",
+sliderInput("rented_bedrooms", "Select number of rented bedrooms",
                   min = min(rented_bedrooms_list), 
                   max = max(rented_bedrooms_list),
                   value = c(min(rented_bedrooms_list),max(rented_bedrooms_list)),
                   sep = "")
 
-sliderInput("max_renter_cap", "Maximum renter capacity",
+sliderInput("max_renter_cap", "Select maximum renter capacity",
                   min = min(max_renter_cap_list), 
                   max = max(max_renter_cap_list),
                   value = c(min(max_renter_cap_list),max(max_renter_cap_list)),
                   sep = "")
 
-sliderInput("bathrooms", "Bathrooms",
+sliderInput("bathrooms", "Select number of bathrooms",
                   min = min(bathrooms_list), 
                   max = max(bathrooms_list),
                   value = c(min(bathrooms_list),max(bathrooms_list)),
@@ -119,16 +122,16 @@ sliderInput("bathrooms", "Bathrooms",
 #          multiple = TRUE)
 
 
-h5("Listed on these services")
+h5("Listed on any of these services")
 checkboxInput("airbnb", "Airbnb", value = TRUE)
-checkboxInput("homeaway", "HomeAway", value = FALSE)
-checkboxInput("flipkey", "FlipKey", value = FALSE)
-checkboxInput("vrbo", "VRBO", value = FALSE)
-checkboxInput("craigslist", "Craigslist", value = FALSE)
+checkboxInput("homeaway", "HomeAway", value = TRUE)
+checkboxInput("flipkey", "FlipKey", value = TRUE)
+checkboxInput("vrbo", "VRBO", value = TRUE)
+checkboxInput("craigslist", "Craigslist", value = TRUE)
 #checkboxInput("couch_surfing", "Couch Surfing", value = TRUE)
 #checkboxInput("boston_rentals", "Boston Rentals", value = TRUE)
 
-actionButton("update1", "Update results")
+actionButton("update1", "Update")
 ```
 
 
@@ -153,19 +156,24 @@ content <- paste("<b>","ID:","</b>",df$id,"</br>",
                  )
 
 
+
 df_map1 = eventReactive(input$update1, {
-    df  %>%
+    
+    df_blank = df %>% filter(id=="dummy")
+    df_airbnb =   df_homeaway = df_flipkey = df_vrbo = df_craiglist = NULL
+    if (input$airbnb == TRUE) {df_airbnb <- df %>% filter(airbnb==TRUE)}
+    if (input$homeaway == TRUE) {df_homeaway <- df %>% filter(homeaway==TRUE)}
+    if (input$flipkey == TRUE) {df_flipkey <- df %>% filter(flipkey==TRUE)}
+    if (input$vrbo == TRUE) {df_vrbo <- df %>% filter(vrbo==TRUE)}
+    if (input$craigslist == TRUE) {df_craiglist <- df %>% filter(craigslist==TRUE)}
+
+    df <- unique(bind_rows(df_blank, df_airbnb, df_homeaway, df_flipkey, df_vrbo, df_craiglist)) %>%
       filter(zipcode %in% input$zipcode,
              str_type %in% input$str_type,
              property_type %in% input$property_type,
              between(rented_bedrooms, input$rented_bedrooms[1], input$rented_bedrooms[2]),
              between(max_renter_cap, input$max_renter_cap[1], input$max_renter_cap[2]),
-             between(bathrooms, input$bathrooms[1], input$bathrooms[2]),
-             airbnb == input$airbnb,
-             homeaway == input$homeaway,
-             flipkey == input$flipkey,
-             vrbo == input$vrbo,
-             craigslist == input$craigslist) 
+             between(bathrooms, input$bathrooms[1], input$bathrooms[2]))
   })
 
 
@@ -193,19 +201,22 @@ Column
 table_colnames <- c("Address", "Zipcode", "STR Type", "Property Type", "Total Bedrooms", "Rented Bedrooms", "Max. Renter Capacity", "Bathrooms", "Kitchen", "Condominium Association")
 
 df_table1 <- eventReactive(input$update1, {
-    df  %>%
+    df_blank = df %>% filter(id=="dummy")
+    df_airbnb =   df_homeaway = df_flipkey = df_vrbo = df_craiglist = NULL
+    if (input$airbnb == TRUE) {df_airbnb <- df %>% filter(airbnb==TRUE)}
+    if (input$homeaway == TRUE) {df_homeaway <- df %>% filter(homeaway==TRUE)}
+    if (input$flipkey == TRUE) {df_flipkey <- df %>% filter(flipkey==TRUE)}
+    if (input$vrbo == TRUE) {df_vrbo <- df %>% filter(vrbo==TRUE)}
+    if (input$craigslist == TRUE) {df_craiglist <- df %>% filter(craigslist==TRUE)}
+
+    df <- unique(bind_rows(df_blank, df_airbnb, df_homeaway, df_flipkey, df_vrbo, df_craiglist)) %>%
       filter(zipcode %in% input$zipcode,
              str_type %in% input$str_type,
              property_type %in% input$property_type,
              between(rented_bedrooms, input$rented_bedrooms[1], input$rented_bedrooms[2]),
              between(max_renter_cap, input$max_renter_cap[1], input$max_renter_cap[2]),
-             between(bathrooms, input$bathrooms[1], input$bathrooms[2]),
-             airbnb == input$airbnb,
-             homeaway == input$homeaway,
-             flipkey == input$flipkey,
-             vrbo == input$vrbo,
-             craigslist == input$craigslist)  %>%
-    select(address, zipcode, str_type, property_type, total_bedrooms, rented_bedrooms, max_renter_cap, bathrooms, kitchen, condo) %>%
+             between(bathrooms, input$bathrooms[1], input$bathrooms[2])) %>%
+      select(address, zipcode, str_type, property_type, total_bedrooms, rented_bedrooms, max_renter_cap, bathrooms, kitchen, condo) %>%
     set_colnames(table_colnames)
   })
   
@@ -262,7 +273,7 @@ pickerInput("property_type",
       #      selected = quant_vars[3], 
       #    multiple = FALSE)
 
-actionButton("update2", "Update results")
+actionButton("update2", "Update")
 ```
 
 
