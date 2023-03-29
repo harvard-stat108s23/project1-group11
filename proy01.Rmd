@@ -59,12 +59,10 @@ max_renter_cap_list <- sort(unique(df$max_renter_cap))
 bathrooms_list <- sort(unique(df$bathrooms))
 ```
 
+# Spatial distribution {data-icon="ion-earth"}
 
-Spatial distribution {data-icon="ion-earth"}
-=====================================  
+## Inputs {.sidebar data-width="300"}
 
-Inputs {.sidebar data-width=300}
--------------------------------------
 ```{r}
 pickerInput("zipcode",
             label = "Select zipcodes",
@@ -136,11 +134,10 @@ checkboxInput("craigslist", "Craigslist", value = TRUE)
 actionButton("update1", "Update")
 ```
 
+## Column
 
-Column
--------------------------------------
+### Map of selected Short-Term Rentals
 
-###  Map of selected Short-Term Rentals
 ```{r}
 content <- paste("<b>","ID:","</b>",df$id,"</br>",
                  "<b>","Address:","</b>",df$address,"</br>",
@@ -192,12 +189,10 @@ leaflet(options =leafletOptions(minZoom =11,maxZoom =16)) %>%
 })
 ```
 
-
-Column
--------------------------------------
+## Column
 
 ### Information of selected Short-Term Rentals
-    
+
 ```{r}
 
 table_colnames <- c("Address", "Zipcode", "STR Type", "Property Type", "Total Bedrooms", "Rented Bedrooms", "Max. Renter Capacity", "Bathrooms", "Kitchen", "Condominium Association")
@@ -229,15 +224,11 @@ renderDT({
                              orderClasses = TRUE))
   })
 
-```   
+```
 
+# Statistical analysis {data-icon="ion-stats-bars"}
 
-
-Statistical analysis {data-icon="ion-stats-bars"}
-=====================================     
-
-Inputs {.sidebar data-width=300}
--------------------------------------
+## Inputs {.sidebar data-width="300"}
 
 ```{r}
 
@@ -285,12 +276,10 @@ pickerInput("property_type2",
 actionButton("update2", "Update")
 ```
 
-
-
-Column
--------------------------------------
+## Column
 
 ### Boxplot analysis
+
 ```{r}
 df_boxplot = eventReactive(input$update2, {
   df %>% 
@@ -306,11 +295,11 @@ y <- eventReactive(input$update2, input$y)
 
 renderPlotly({
 p1 <- ggplotly(
-  ggplot(data = df_boxplot(), mapping = aes(x = x, y = y)) +
+  ggplot(data = df_boxplot(), mapping = aes(x = zipcode, y = total_bedrooms)) +
   geom_boxplot() +
   geom_jitter(width=0.2, height=0.1) +
-  labs(x = x(),
-       y = y())#,
+  labs(x = "Zipcode",
+       y = "Total Bedrooms")#,
    #tooltip = c("x", "y", "zipcode2", "str_type2")
 )
 
@@ -334,7 +323,6 @@ p1 <- ggplotly(
 #ggplotly(p)
 #})
 ```
-
 
 ```{r}
 df_boxplot = eventReactive(input$update2, {
@@ -363,8 +351,7 @@ ggplotly(
 
 ```
 
-Column
--------------------------------------
+## Column
 
 ### Information of selected Short-Term Rentals
 
@@ -388,50 +375,46 @@ renderDT({
                              orderClasses = TRUE))
   })
 
-```   
+```
 
-
-About {data-orientation=rows data-icon="fa-info-circle"}
-=====================================  
+# About {data-orientation="rows" data-icon="fa-info-circle"}
 
 ### **DATA DICTIONARY**
 
 The dataset can be found [here](https://data.cambridgema.gov/Inspectional-Services/Short-Term-Rentals/wxgv-w968/explore/).
 
-The official data dictionary can be found [here](https://data.cambridgema.gov/Inspectional-Services/Short-Term-Rentals/wxgv-w968).  
+The official data dictionary can be found [here](https://data.cambridgema.gov/Inspectional-Services/Short-Term-Rentals/wxgv-w968).
 
-| Column Name                  | Description                                                            |
-| ---------------------------  | ---------------------------------------------------------------------- |
-| **ID**                       | Rental ID Number                                                       |
-| **Issue Date**               | Date of Issue for the Short Term Rental certificate                    |
-| **Address**                  | Address of the STR                                                     |
-| **Latitude**                 | Latitude of the location                                               |
-| **Longitude**                | Longitude of the location                                              |
-| **Zipcode**                  | Zipcode of the location                                                |
-| **STR Type**                 | Response to form question: "Please select the appropriate STR type"    |
-| **Property Type**            | Description of the building property type                              |
-| **Condominium Association**  | Is the Short-Term Rental Unit part of a condominium association?       |
-| **Total Bedrooms**           | Total number of legal bedrooms in the short-term rental unit           |
-| **Rented Bedrooms**          | Number of legal bedrooms to be rented as part of this application      |
-| **Maximum Renter Capacity**  | Maximum number of people to which the short term rental will be rented |
-| **Kitchen**                  | Will the kitchen be available to the renter?                           |
-| **Bathrooms**                | Number of bathrooms available to the renter                            |
-| **Airbnb**                   | Whether the rental is listed on this service                           |
-| **HomeAway**                 | Whether the rental is listed on this service                           |
-| **FlipKey**                  | Whether the rental is listed on this service                           |
-| **VRBO**                     | Whether the rental is listed on this service                           |
-| **Craigslist**               | Whether the rental is listed on this service                           |
-| **Couch Surfing**            | Whether the rental is listed on this service                           |
-| **Boston Rentals**           | Whether the rental is listed on this service                           |
-
-
+| Column Name                 | Description                                                            |
+|---------------------|---------------------------------------------------|
+| **ID**                      | Rental ID Number                                                       |
+| **Issue Date**              | Date of Issue for the Short Term Rental certificate                    |
+| **Address**                 | Address of the STR                                                     |
+| **Latitude**                | Latitude of the location                                               |
+| **Longitude**               | Longitude of the location                                              |
+| **Zipcode**                 | Zipcode of the location                                                |
+| **STR Type**                | Response to form question: "Please select the appropriate STR type"    |
+| **Property Type**           | Description of the building property type                              |
+| **Condominium Association** | Is the Short-Term Rental Unit part of a condominium association?       |
+| **Total Bedrooms**          | Total number of legal bedrooms in the short-term rental unit           |
+| **Rented Bedrooms**         | Number of legal bedrooms to be rented as part of this application      |
+| **Maximum Renter Capacity** | Maximum number of people to which the short term rental will be rented |
+| **Kitchen**                 | Will the kitchen be available to the renter?                           |
+| **Bathrooms**               | Number of bathrooms available to the renter                            |
+| **Airbnb**                  | Whether the rental is listed on this service                           |
+| **HomeAway**                | Whether the rental is listed on this service                           |
+| **FlipKey**                 | Whether the rental is listed on this service                           |
+| **VRBO**                    | Whether the rental is listed on this service                           |
+| **Craigslist**              | Whether the rental is listed on this service                           |
+| **Couch Surfing**           | Whether the rental is listed on this service                           |
+| **Boston Rentals**          | Whether the rental is listed on this service                           |
 
 ### **META INFORMATION**
 
 **Title:** Short-term rentals in Cambridge
 
-**Summary:**  
-This dataset is part of the **Cambridge’s Open Data Program**. It contains information about Short-term rentals (STR) in Cambridge, Massachusetts. STR refers to the rental of any dwelling unit of bedroom as residential accommodation for a duration of less than 30 consecutive days. 
+**Summary:**\
+This dataset is part of the **Cambridge's Open Data Program**. It contains information about Short-term rentals (STR) in Cambridge, Massachusetts. STR refers to the rental of any dwelling unit of bedroom as residential accommodation for a duration of less than 30 consecutive days.
 
 Use cases of this dataset include providing valuable insights into the short-term rental market in Cambridge, like understanding the distribution, density and characteristics of STR across Cambridge neighborhoods, which can be useful for a variety of stakeholders, including policymakers, real estate investors, and community organizations.
 
@@ -445,15 +428,12 @@ Use cases of this dataset include providing valuable insights into the short-ter
 
 **Dataset Owner:** Josh Wolff
 
-**License:**  The license for this dataset is unspecified
+**License:** The license for this dataset is unspecified
 
-**Developers:** 
+**Developers:**
 
-- Joslyn Fu
+-   Joslyn Fu
 
-- Delina Irgau
+-   Delina Irgau
 
-- Michael Sam
-
-
-
+-   Michael Sam
