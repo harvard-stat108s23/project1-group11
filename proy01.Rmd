@@ -231,7 +231,6 @@ renderDT({
 ## Inputs {.sidebar data-width="300"}
 
 ```{r}
-
 quant_vars <- c("total_bedrooms", "rented_bedrooms", "max_renter_cap", "bathrooms")
 qual_vars <- c("zipcode", "str_type", "property_type", "kitchen", "condo", "airbnb", "flipkey", "vrbo", "craigslist")
 
@@ -283,6 +282,7 @@ actionButton("update2", "Update")
 ```{r}
 #df[df == "TRUE"] <- "Yes"
 #replace(df$airbnb, df$airbnb == FALSE, "No") 
+#mapping <-list("Total Bedrooms" = "total_bedrooms"")
 df_boxplot = eventReactive(input$update2, {
   df %>% 
     filter(zipcode %in% input$zipcode2,
