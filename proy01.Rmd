@@ -281,6 +281,8 @@ actionButton("update2", "Update")
 ### Boxplot analysis
 
 ```{r}
+#df[df == "TRUE"] <- "Yes"
+#replace(df$airbnb, df$airbnb == FALSE, "No") 
 df_boxplot = eventReactive(input$update2, {
   df %>% 
     filter(zipcode %in% input$zipcode2,
@@ -289,17 +291,21 @@ df_boxplot = eventReactive(input$update2, {
     mutate(x = .data[[input$x]],
            y = .data[[input$y]])
 })
+
   
 x <- eventReactive(input$update2, input$x)
 y <- eventReactive(input$update2, input$y)
 
 renderPlotly({
 p1 <- ggplotly(
-  ggplot(data = df_boxplot(), mapping = aes(x = zipcode, y = total_bedrooms)) +
-  geom_boxplot() +
-  geom_jitter(width=0.2, height=0.1) +
-  labs(x = "Zipcode",
-       y = "Total Bedrooms")#,
+  ggplot(data = df_boxplot(), mapping = aes(x = x, y = y, fill = x)) +
+  geom_boxplot() +  
+  geom_jitter(width=0.15, height=0.1, alpha = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  theme_bw() +
+  theme(legend.position="none") +
+  labs(x = x(),
+       y = y())#,
    #tooltip = c("x", "y", "zipcode2", "str_type2")
 )
 
