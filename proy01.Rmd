@@ -281,7 +281,9 @@ actionButton("update2", "Update")
 
 ```{r}
 #df[df == "TRUE"] <- "Yes"
-#replace(df$airbnb, df$airbnb == FALSE, "No") 
+#df[toString(df)== "TRUE"] = "Yes"
+#print(df$airbnb)
+#replace(df$airbnb, toString(df$airbnb) == "FALSE", "No") 
 #mapping <-list("Total Bedrooms" = "total_bedrooms"")
 df_boxplot = eventReactive(input$update2, {
   df %>% 
@@ -292,7 +294,6 @@ df_boxplot = eventReactive(input$update2, {
            y = .data[[input$y]])
 })
 
-  
 x <- eventReactive(input$update2, input$x)
 y <- eventReactive(input$update2, input$y)
 
@@ -306,7 +307,7 @@ p1 <- ggplotly(
   theme(legend.position="none") +
   labs(x = x(),
        y = y())#,
-   #tooltip = c("x", "y", "zipcode2", "str_type2")
+   #tooltip = c("x", "y")
 )
 
   })
