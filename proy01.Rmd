@@ -175,6 +175,9 @@ df_map1 = eventReactive(input$update1, {
              between(bathrooms, input$bathrooms[1], input$bathrooms[2]))
   })
 
+greenLeafIcon <- makeIcon(
+  iconUrl = "588a667fd06f6719692a2d19.png",
+  iconWidth = 15, iconHeight = 15)
 
 renderLeaflet({
 leaflet(options =leafletOptions(minZoom =11,maxZoom =16)) %>%
@@ -183,10 +186,12 @@ leaflet(options =leafletOptions(minZoom =11,maxZoom =16)) %>%
   addMarkers(lng = ~lon,
              lat = ~lat,
              data = df_map1(),
-             popup = content) %>%
+             popup = content, 
+             icon = greenLeafIcon) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addMiniMap()
 })
+
 ```
 
 ## Column
