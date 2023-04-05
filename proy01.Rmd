@@ -20,6 +20,7 @@ library(leaflet)
 library(DT)
 library(plotly)
 library(shinydashboard)
+library(knitr)
 ```
 
 ```{r global, include = FALSE}
@@ -58,6 +59,28 @@ rented_bedrooms_list <- sort(unique(df$rented_bedrooms))
 max_renter_cap_list <- sort(unique(df$max_renter_cap))
 bathrooms_list <- sort(unique(df$bathrooms))
 ```
+
+
+
+# Home Page {data-icon="ion-home"}
+
+**Short-term rentals in Cambridge**
+
+
+```{r include_image, echo=FALSE}
+
+knitr::include_graphics("LEFT-HOUSE.png")
+```
+
+**This data dashboard seeks to explore short term rentals in Cambridge, MA. **
+
+**Feel free to navigate to Spatial distribution and Statistical analysis to learn more. **
+
+**You can also learn more about the data source through About.**
+
+
+
+
 
 # Spatial distribution {data-icon="ion-earth"}
 
