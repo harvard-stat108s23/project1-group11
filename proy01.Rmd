@@ -5,6 +5,7 @@ output:
     theme: spacelab
     source_code: embed
     orientation: rows
+    vertical_layout: fill
 runtime: shiny
 ---
 
@@ -63,17 +64,42 @@ bathrooms_list <- sort(unique(df$bathrooms))
 
 **Short-term rentals in Cambridge**
 
+## Column {.data-width=650}
 
 ```{r include_image, echo=FALSE}
-knitr::include_graphics("LEFT-HOUSE.png")
+knitr::include_graphics("Cambridge_House.jpeg")
 ```
 
-**This data dashboard seeks to explore short term rentals in Cambridge, MA. **
 
-**Feel free to navigate to Spatial distribution and Statistical analysis to learn more. **
+```{r}
+actionButton("show_popup1", "Spatial distribution", style = "position: absolute; top: 60%; left: 20%;")
+actionButton("show_popup2", "Statistical analysis", style = "position: absolute; top: 60%; left: 40%;")
+actionButton("show_popup3", "About", style = "position: absolute; top: 60%; left: 60%;")
 
-**You can also learn more about the data source through About.**
+observeEvent(input$show_popup1, {
+  showModal(modalDialog(
+    title = "Spatial distribution",
+    p("Through this section, you can explore the spatial distributin of the short term rentals with some input of your choice."),
+    footer = modalButton("Close")
+  ))
+})
 
+observeEvent(input$show_popup2, {
+  showModal(modalDialog(
+    title = "Statistical analysis",
+    p("Through this section, you can have a boxplot analysis of the short term rentals with some input of your choice."),
+    footer = modalButton("Close")
+  ))
+})
+
+observeEvent(input$show_popup3, {
+  showModal(modalDialog(
+    title = "About",
+    p("Here you can learn more about the definitions of the variables and data source."),
+    footer = modalButton("Close")
+  ))
+})
+```
 
 
 
