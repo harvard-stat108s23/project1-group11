@@ -15,11 +15,12 @@ From the homepage, you can toggle to Spatial Distribution to visualize a map of 
   
 Alternatively, you can toggle to Statistical Analysis to visualize a boxplot of properties of interest.
 
+  - Use **Select variables of interest** to view properties by the selected variable
+  - Click **Select grouping variable** to group properties together by this specified variable
   - Use **Select zipcodes** to view properties in a specified subset of zipcodes
   - Click **Select Short-Term Rental types** to specify properties of interest
   - Browse **Select property types** for a range of family homes
-  - Select the desired number of bedrooms, total occupants, and bathrooms
-  - Include various services the property is listed on, if applicable
+  - Click **Update** to visualize specified properties
 
 # About
 We have included an "About" section in our dashboard for more information on definitions of the variables, explore the whole data set, and a list the developers behind this dashboard.
