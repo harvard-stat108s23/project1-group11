@@ -22,7 +22,7 @@ Alternatively, you can toggle to Statistical Analysis to visualize a boxplot of 
   - **Select property types** for a range of family homes
   - **Update** to visualize specified properties
 
-We have also included an **About** section in our dashboard for more information on definitions of the variables, explore the whole data set, and a list the developers behind this dashboard.
+We have also included an **About** section in our dashboard for more information on definitions of the variables, specifics of the data set, and a list of the developers behind this dashboard.
 
 
 # Authors
