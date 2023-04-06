@@ -22,6 +22,7 @@ library(DT)
 library(plotly)
 library(shinydashboard)
 library(knitr)
+library(htmltools)
 ```
 
 ```{r global, include = FALSE}
@@ -62,24 +63,33 @@ bathrooms_list <- sort(unique(df$bathrooms))
 
 # Home Page {data-icon="ion-home"}
 
-**Short-term rentals in Cambridge**
+```{r}
+h2("Short-Term Rentals (STR) in Cambridge, MA", style = "text-align:center; font-weight:bold;")
+h5("STR are rentals of any dwelling unit of bedroom as residential accommodation for a duration of less than 30 consecutive days.", style = "text-align:center;")
+h5("Explore the characteristics of the STR in Cambridge with this dashboard and gain insights of their spatial distribution and characteristics!", style = "text-align:center;")
+```
 
 ## Column {.data-width=650}
 
 ```{r include_image, echo=FALSE}
-knitr::include_graphics("Cambridge_House.jpeg")
+img_file <- "Cambridge_House.jpg"
+img_div <- div(
+  style = "display:flex; justify-content:center;",
+  img(src = img_file, style = "max-width:100%; opacity:0.5;")
+)
+img_div
 ```
 
 
 ```{r}
-actionButton("show_popup1", "Spatial distribution", style = "position: absolute; top: 60%; left: 20%;")
-actionButton("show_popup2", "Statistical analysis", style = "position: absolute; top: 60%; left: 40%;")
-actionButton("show_popup3", "About", style = "position: absolute; top: 60%; left: 60%;")
+actionButton("show_popup1", "Spatial distribution", style = "position: absolute; top: 35%; left: 10%; width: 275px")
+actionButton("show_popup2", "Statistical analysis", style = "position: absolute; top: 55%; left: 10%; width: 275px")
+actionButton("show_popup3", "About", style = "position: absolute; top: 75%; left: 10%; width: 275px")
 
 observeEvent(input$show_popup1, {
   showModal(modalDialog(
     title = "Spatial distribution",
-    p("Through this section, you can explore the spatial distributin of the short term rentals with some input of your choice."),
+    p("In this section, you can explore the spatial distribution of the Short-Term Rentals and use filters of your choice such as zipcode, STR type, property type, services listed, etc. Also, you can interact with the map, click on the icons, and learn the detailed characteristics of the STRs."),
     footer = modalButton("Close")
   ))
 })
@@ -87,7 +97,7 @@ observeEvent(input$show_popup1, {
 observeEvent(input$show_popup2, {
   showModal(modalDialog(
     title = "Statistical analysis",
-    p("Through this section, you can have a boxplot analysis of the short term rentals with some input of your choice."),
+    p("In this section, you can perform a boxplot analysis of the Short-Term Rentals with some inputs of your choice. You can explore the distribution of a variable of interest grouped by another variable and   gain insights about the number of bedrooms, bathrooms, maximum rented capacity and more."),
     footer = modalButton("Close")
   ))
 })
@@ -95,7 +105,7 @@ observeEvent(input$show_popup2, {
 observeEvent(input$show_popup3, {
   showModal(modalDialog(
     title = "About",
-    p("Here you can learn more about the definitions of the variables and data source."),
+    p("In this section, you can learn more about the definitions of the variables, explore the data source and learn more about the developers behind this dashboard."),
     footer = modalButton("Close")
   ))
 })
